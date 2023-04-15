@@ -19,7 +19,7 @@ export const CTAButton = styled(Button)`
 export const MintButton = ({
   onMint,
   candyMachine,
-  isMinting,
+  isMinting
 }: {
   onMint: () => Promise<void>;
   candyMachine?: CandyMachineAccount;
@@ -37,14 +37,14 @@ export const MintButton = ({
 
   const getMintButtonContent = () => {
     if (candyMachine?.state.isSoldOut) {
-      return 'SOLD OUT';
+      return 'AGOTADO';
     } else if (isMinting) {
       return <CircularProgress />;
     } else if (candyMachine?.state.isPresale) {
-      return 'PRESALE MINT';
+      return 'PREVENTA';
     }
 
-    return 'MINT';
+    return 'COMPRAR CON CRYPTO';
   };
 
   return (

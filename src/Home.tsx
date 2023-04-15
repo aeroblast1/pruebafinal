@@ -1,25 +1,26 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
-import * as anchor from "@project-serum/anchor";
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import * as anchor from '@project-serum/anchor';
 
-import styled from "styled-components";
-import { Container, Snackbar } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Alert from "@material-ui/lab/Alert";
-import { PublicKey } from "@solana/web3.js";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletDialogButton } from "@solana/wallet-adapter-material-ui";
+import styled from 'styled-components';
+import { Container, Snackbar } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import Alert from '@material-ui/lab/Alert';
+import { PublicKey } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletDialogButton } from '@solana/wallet-adapter-material-ui';
 import {
   awaitTransactionSignatureConfirmation,
   CandyMachineAccount,
   CANDY_MACHINE_PROGRAM,
   getCandyMachineState,
-  mintOneToken,
-} from "./candy-machine";
-import { AlertState } from "./utils";
-import { Header } from "./Header";
-import { MintButton } from "./MintButton";
-import { GatewayProvider } from "@civic/solana-gateway-react";
-import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
+  mintOneToken
+} from './candy-machine';
+import { AlertState } from './utils';
+import { Header } from './Header';
+import { MintButton } from './MintButton';
+import { GatewayProvider } from '@civic/solana-gateway-react';
+import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
+import { WhaButton } from './WhatsappButton';
 
 const ConnectButton = styled(WalletDialogButton)`
   width: 100%;
@@ -47,8 +48,8 @@ const Home = (props: HomeProps) => {
   const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
   const [alertState, setAlertState] = useState<AlertState>({
     open: false,
-    message: "",
-    severity: undefined,
+    message: '',
+    severity: undefined
   });
 
   const rpcUrl = props.rpcHost;
@@ -67,7 +68,7 @@ const Home = (props: HomeProps) => {
     return {
       publicKey: wallet.publicKey,
       signAllTransactions: wallet.signAllTransactions,
-      signTransaction: wallet.signTransaction,
+      signTransaction: wallet.signTransaction
     } as anchor.Wallet;
   }, [wallet]);
 
@@ -85,7 +86,9 @@ const Home = (props: HomeProps) => {
         );
         setCandyMachine(cndy);
       } catch (e) {
-        console.log("There was a problem fetching Candy Machine state");
+        console.log(
+          'Hubo un problema solicitando el estado de la Maquina de Caramelos'
+        );
         console.log(e);
       }
     }
@@ -94,7 +97,7 @@ const Home = (props: HomeProps) => {
   const onMint = async () => {
     try {
       setIsUserMinting(true);
-      document.getElementById("#identity")?.click();
+      document.getElementById('#identity')?.click();
       if (wallet.connected && candyMachine?.program && wallet.publicKey) {
         const mintTxId = (
           await mintOneToken(candyMachine, wallet.publicKey)
@@ -113,40 +116,41 @@ const Home = (props: HomeProps) => {
         if (status && !status.err) {
           setAlertState({
             open: true,
-            message: "Congratulations! Mint succeeded!",
-            severity: "success",
+            message: 'Felicidades! Compra exitosa!',
+            severity: 'success'
           });
         } else {
           setAlertState({
             open: true,
-            message: "Mint failed! Please try again!",
-            severity: "error",
+            message: 'Transacción Fallida! Por favor intentalo Nuevamente!',
+            severity: 'error'
           });
         }
       }
     } catch (error: any) {
-      let message = error.msg || "Minting failed! Please try again!";
+      let message = error.msg || '¡Fallo en la compra, intentalo Nuevamente!';
       if (!error.msg) {
         if (!error.message) {
-          message = "Transaction Timeout! Please try again.";
-        } else if (error.message.indexOf("0x137") !== -1) {
-          message = `SOLD OUT!`;
-        } else if (error.message.indexOf("0x135") !== -1) {
-          message = `Insufficient funds to mint. Please fund your wallet.`;
+          message =
+            'Tiempo de espera terminado, Por favor intentelo Nuevamente.';
+        } else if (error.message.indexOf('0x137') !== -1) {
+          message = `AGOTADO!`;
+        } else if (error.message.indexOf('0x135') !== -1) {
+          message = `Fondos Insuficientes. Por favor recargue su billetera.`;
         }
       } else {
         if (error.code === 311) {
-          message = `SOLD OUT!`;
+          message = `AGOTADO!`;
           window.location.reload();
         } else if (error.code === 312) {
-          message = `Minting period hasn't started yet.`;
+          message = `El proceso de compra no ha empezado.`;
         }
       }
 
       setAlertState({
         open: true,
         message,
-        severity: "error",
+        severity: 'error'
       });
     } finally {
       setIsUserMinting(false);
@@ -159,21 +163,21 @@ const Home = (props: HomeProps) => {
     anchorWallet,
     props.candyMachineId,
     props.connection,
-    refreshCandyMachineState,
+    refreshCandyMachineState
   ]);
 
   return (
-    <Container style={{ marginTop: 100 }}>
-      <Container maxWidth="xs" style={{ position: "relative" }}>
+    <Container>
+      <Container maxWidth="xs" style={{ position: 'relative' }}>
         <Paper
           style={{
             padding: 24,
-            backgroundColor: "#151A1F",
-            borderRadius: 6,
+            backgroundColor: '#151A1F',
+            borderRadius: 6
           }}
         >
           {!wallet.connected ? (
-            <ConnectButton>Connect Wallet</ConnectButton>
+            <ConnectButton>CONECTAR BILLETERA</ConnectButton>
           ) : (
             <>
               <Header candyMachine={candyMachine} />
@@ -188,7 +192,7 @@ const Home = (props: HomeProps) => {
                         wallet.publicKey ||
                         new PublicKey(CANDY_MACHINE_PROGRAM),
                       //@ts-ignore
-                      signTransaction: wallet.signTransaction,
+                      signTransaction: wallet.signTransaction
                     }}
                     gatekeeperNetwork={
                       candyMachine?.state?.gatekeeper?.gatekeeperNetwork
@@ -214,13 +218,20 @@ const Home = (props: HomeProps) => {
           )}
           {process.env.REACT_APP_CROSSMINT_ID && (
             <CrossmintPayButton
-                style={{ margin: "0 auto", width: "100%" }}
-                clientId={process.env.REACT_APP_CROSSMINT_ID}
-                environment={process.env.REACT_APP_SOLANA_NETWORK === "devnet" && process.env.REACT_APP_SOLANA_RPC_HOST === "https://api.devnet.solana.com" ? "staging" : ""}
+              style={{ margin: '0 auto', width: '100%' }}
+              clientId={process.env.REACT_APP_CROSSMINT_ID}
+              environment={
+                process.env.REACT_APP_SOLANA_NETWORK === 'devnet' &&
+                process.env.REACT_APP_SOLANA_RPC_HOST ===
+                  'https://api.devnet.solana.com'
+                  ? 'staging'
+                  : ''
+              }
             />
           )}
         </Paper>
       </Container>
+      <WhaButton />
 
       <Snackbar
         open={alertState.open}
