@@ -21,7 +21,7 @@ import { MintButton } from './MintButton';
 import { GatewayProvider } from '@civic/solana-gateway-react';
 import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
 import { WhaButton } from './WhatsappButton';
-
+import { Descubrenos } from './Descubrenos';
 const ConnectButton = styled(WalletDialogButton)`
   width: 100%;
   height: 60px;
@@ -168,6 +168,7 @@ const Home = (props: HomeProps) => {
 
   return (
     <Container>
+      <Descubrenos />
       <Container maxWidth="xs" style={{ position: 'relative' }}>
         <Paper
           style={{
