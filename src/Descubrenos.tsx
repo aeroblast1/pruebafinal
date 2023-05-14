@@ -8,7 +8,7 @@ const ColorButton = styled(Button)<ButtonProps>(() => ({
   }
 }));
 
-const initialUrl = 'https://marcelorm99.wixsite.com/my-site/mecado-de-reventa';
+const initialUrl = 'https://www.blicket.org/';
 
 export function Descubrenos() {
   const textStyles = {
