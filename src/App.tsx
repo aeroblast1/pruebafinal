@@ -12,7 +12,7 @@ import {
   getSolletWallet,
   getSolletExtensionWallet,
 } from "@solana/wallet-adapter-wallets";
-import { CrossmintPayButton } from "@crossmint/client-sdk-react-ui";
+
 import {
   ConnectionProvider,
   WalletProvider,
@@ -79,10 +79,6 @@ const App = () => {
           </WalletDialogProvider>
         </WalletProvider>
       </ConnectionProvider>
-      <CrossmintPayButton
-                clientId="5cca101b-dc6a-4011-985e-0d44b85caac4"
-                mintConfig={{"type":"candy-machine"}}
-      />
     </ThemeProvider>
   );
 };
