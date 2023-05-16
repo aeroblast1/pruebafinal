@@ -17,7 +17,6 @@ import {
 } from './candy-machine';
 import { AlertState } from './utils';
 import { Header } from './Header';
-import { MintButton } from './MintButton';
 import { GatewayProvider } from '@civic/solana-gateway-react';
 import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui';
 import { WhaButton } from './WhatsappButton';
@@ -201,18 +200,10 @@ const Home = (props: HomeProps) => {
                     clusterUrl={rpcUrl}
                     options={{ autoShowModal: false }}
                   >
-                    <MintButton
-                      candyMachine={candyMachine}
-                      isMinting={isUserMinting}
-                      onMint={onMint}
-                    />
+                    <WhaButton />
                   </GatewayProvider>
                 ) : (
-                  <MintButton
-                    candyMachine={candyMachine}
-                    isMinting={isUserMinting}
-                    onMint={onMint}
-                  />
+                  <div></div>
                 )}
               </MintContainer>
             </>
@@ -232,7 +223,7 @@ const Home = (props: HomeProps) => {
           )}
         </Paper>
       </Container>
-      <WhaButton />
+      
 
       <Snackbar
         open={alertState.open}
